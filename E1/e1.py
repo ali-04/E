@@ -3,6 +3,7 @@
 
 
 
+
 def adad_avval (y) :
     qwe = list()
     for zx in range (2,y):
