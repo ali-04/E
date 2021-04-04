@@ -16,6 +16,7 @@ url = 'https://www.skyroom.online/ch/mr_sedaghat/ostad-%s'%ostad
 
 
 
+
 class stu :
     _names    = {} 
     _students = {}
