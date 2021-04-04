@@ -17,12 +17,13 @@ url = 'https://www.skyroom.online/ch/mr_sedaghat/ostad-%s'%ostad
 
 
 class stu :
+    _names    = {} 
     _students = {}
     def __init__ (self,name,password):
         self.name = name
         self.password = password
         stu._students[len(stu._students)] = self
-        
+        stu._names[name] = self
 
 
     def __str__ (self):
@@ -47,6 +48,7 @@ class stu :
         try: del self.driver
         except: pass
         del self
+        
 
     def delete_all():
      #  print(stu._students)
@@ -69,14 +71,20 @@ for q in setting['students']: stu(q,setting['students'][q])
 def loading(m=None):
 
     
-    stu.delete_all()
+   
     
 
     with open(getcwd()+'setting.json' ,'r') as F:
         setting = loads(F.read())
 
-    for q in setting['students']: stu(q,setting['students'][q])
-
+    for q in setting['students']: 
+        if q not in list(stu._names):
+            stu(q,setting['students'][q])
+    
+    
+    for q in stu._names:
+        if q not in setting['students']:
+            stu._names[q]._d
 print (stu.print())
 
 
