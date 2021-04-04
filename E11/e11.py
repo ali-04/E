@@ -30,6 +30,7 @@ class stu :
     def __str__ (self):
         return self.name
 
+
     def print ():
         l = []
         for q0 in stu._students:
