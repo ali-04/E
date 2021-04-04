@@ -19,7 +19,7 @@ url = 'https://www.skyroom.online/ch/mr_sedaghat/ostad-%s'%ostad
 
 class stu :
     _names    = {} 
-    _students = {}
+    _students = []
     def __init__ (self,name,password):
         self.name = name
         self.password = password
@@ -33,8 +33,9 @@ class stu :
 
     def print ():
         l = []
-        for q0 in stu._students:
-            q = stu._students[q0]
+        q0 = 0
+        for q in stu._students:
+            q0 += 1
             l.append(str(q0)+"_"+str(q))
         return("\n".join(l))
 
@@ -49,16 +50,19 @@ class stu :
     def delete (self):
         try: del self.driver
         except: pass
+        stu._students.remove(self)
+        del stu._names[self.name]
         del self
+        
         
 
     def delete_all():
      #  print(stu._students)
-        for q0 in stu._students:
-            q = stu._students[q0]
+        for q in stu._students:
+            
             q.delete()
         stu._students = {}
-    
+        stu._names = []
 
     def dast(self):
         self.driver.find_element_by_xpath('//*[@id="toolbar"]/button[7]').click()
@@ -86,7 +90,15 @@ def loading(m=None):
     
     for q in stu._names:
         if q not in setting['students']:
-            stu._names[q]._d
+            stu._names[q].delete()
+
+
+
+
+
+
+
+
 print (stu.print())
 
 
