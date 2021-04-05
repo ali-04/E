@@ -23,7 +23,7 @@ class stu :
     def __init__ (self,name,password):
         self.name = name
         self.password = password
-        stu._students[len(stu._students)] = self
+        stu._students.append (self)
         stu._names[name] = self
 
 
@@ -39,13 +39,23 @@ class stu :
             l.append(str(q0)+"_"+str(q))
         return("\n".join(l))
 
-    def _apend (self):
+    def _apend (self,*info):
+        
+        try:
+            voice_connection = info[1] == "True"
+        except:
+            voice_connection = False
+
+        
         self.driver = wd.Firefox()
         self.driver.get(url)
         self.driver.find_element_by_xpath('//*[@id="username"]').send_keys('stu_' + self.name)
         self.driver.find_element_by_xpath('//*[@id="password"]').send_keys(self.password)
         self.driver.find_element_by_xpath('//*[@id="btn_login"]').click()
-
+        if not voice_connection : 
+            input('loaded?? > ')
+            self.driver.find_element_by_xpath('//*[@id="toolbar"]/button[1]').click()
+        
 
     def delete (self):
         try: del self.driver
@@ -69,6 +79,26 @@ class stu :
 
 
 
+    def login_again(self):
+
+        self.driver.find_element_by_xpath('//*[@id="username"]').clear()
+        self.driver.find_element_by_xpath('//*[@id="password"]').clear()
+
+        self.driver.find_element_by_xpath('//*[@id="username"]').send_keys('stu_' + self.name)
+        self.driver.find_element_by_xpath('//*[@id="password"]').send_keys(self.password)
+
+        self.driver.find_element_by_xpath('//*[@id="btn_login"]').click()
+
+
+
+
+    def out_click(self):
+        self.driver.find_element_by_xpath('//*[@id="toolbar"]/button[1]').click()
+
+
+
+    def exit(self):
+        del self.driver
 
 
 
@@ -95,6 +125,12 @@ def loading(m=None):
 
 
 
+def give_stu (num) -> stu :
+    try: return stu._students[int(num)-1]
+    except: print('%s not exist')
+
+
+
 
 
 
@@ -109,17 +145,27 @@ print (stu.print())
 
 
 _code = {
-    'append' : lambda x : stu._students[int(x)]._apend()   ,
-    'reload' : lambda q : loading() ,
-    'print'  : lambda x : print(stu.print()) ,
-    'dast'   : lambda x : stu._students[int(x)].dast()
+    'append' : lambda *x : give_stu(x[0])._apend(*x) ,
+    'reload' : lambda *q : loading() ,
+    'print'  : lambda *x : print(stu.print()) ,
+    'dast'   : lambda *x : give_stu(x[0]).dast() ,
+    'login'  : lambda *x : give_stu(x[0]).login_again() ,
+    'exit'   : lambda *x : give_stu(x[0]).exit() ,
+    'out'    : lambda *x : give_stu(x[0]).out_click() ,
+
 }
 
 while True:
     code = input('code>> ').split()
     try:en = ' '.join(code[1:])
     except:en = None
-    try:_code[code[0]] (en)
-    except:pass
+    try:_code[code[0]] (*en.split())
+    except:
+        if code[0] not in list(_code):
+            print('''
+        don't know what's %s
+        
+        these are already exist:
+%s'''%(code,'\n'.join(list(_code))))
 
 
